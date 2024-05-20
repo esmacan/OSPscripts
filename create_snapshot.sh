@@ -32,11 +32,11 @@ for COMMAND in "openstack" "dmidecode" "tr"; do
 done
 
 # Check if the computerc file exists. If so, assume it has the credentials.
-if [[ ! -f "/root/.openstack_snapshotrc" ]]; then
-  echo "/root/.openstack_snapshotrc file required."
+if [[ ! -f "/home/stack/overcloudrc" ]]; then
+  echo "~/overcloudrc file required."
   exit 1
 else
-  source "/root/.openstack_snapshotrc"
+  source "/home/stack/overcloudrc"
 fi
 
 # Export the emails from & to
@@ -68,7 +68,7 @@ launch_instances_backups () {
       INSTANCE_NAME="${arrInstance[2]:1:${#arrInstance[2]}-1}"
 
       # snapshot names will sort by date, instance_name and UUID.
-      SNAPSHOT_NAME="snapshot-$(date "+%Y%m%d%H%M")-${BACKUP_TYPE}-${INSTANCE_NAME}"
+      SNAPSHOT_NAME="snapshot-$(date "+%Y-%m-%d-%H-%M-%S")-${BACKUP_TYPE}-${INSTANCE_NAME}"
 
       echo "INFO: Start OpenStack snapshot creation : ${INSTANCE_NAME}"
 
@@ -106,7 +106,7 @@ launch_volumes_backups () {
       VOLUME_NAME="${arrVolume[2]:1:${#arrVolume[2]}-1}"
 
       # snapshot names will sort by date, instance_name and UUID.
-      SNAPSHOT_NAME="snapshot-$(date "+%Y%m%d%H%M")-${BACKUP_TYPE}-${VOLUME_NAME}"
+      SNAPSHOT_NAME="snapshot-$(date "+%Y-%m-%d-%H-%M-%S")-${BACKUP_TYPE}-${VOLUME_UUID}-${VOLUME_NAME}"
 
       echo "INFO: Start OpenStack snapshot creation : ${VOLUME_NAME}"
       if [ "$DRY_RUN" = "--dry-run" ] ; then
